@@ -27,3 +27,5 @@ Example Json
     ]
 }
 ```
+
+Example Plugin: https://github.com/VirtualBrightPlayz/EXILEDCustomSpawns
