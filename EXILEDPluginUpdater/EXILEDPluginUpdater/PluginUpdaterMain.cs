@@ -30,6 +30,7 @@ namespace EXILEDPluginUpdater
         public override void OnEnabled()
         {
             base.OnEnabled();
+            Log.Debug("Test\n" + JsonConvert.SerializeObject(new Version(1, 1, 1, 1)));
             Log.Info("Updating all plugins... (This may lag)");
             foreach (IPlugin<IConfig> plugin in Loader.Plugins)
             {
@@ -44,7 +45,17 @@ namespace EXILEDPluginUpdater
                     if (i == typeof(IAutoUpdate))
                     {
                         Log.Info("Downloading update manifest for " + plugin.Name);
-                        PropertyInfo updateurl = type.GetProperty("UpdateManifestUrl", System.Reflection.BindingFlags.Instance);
+                        PropertyInfo updateurl = null;
+                        foreach (var prop in type.GetProperties())
+                        {
+                            if (prop.Name == "UpdateManifestUrl")
+                            {
+                                updateurl = prop;
+                                break;
+                            }
+                        }
+                        if (updateurl == null)
+                            continue;
                         string url = (string)updateurl.GetValue(plugin);
                         try
                         {
